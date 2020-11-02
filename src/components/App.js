@@ -52,6 +52,7 @@ function App() {
     setItems(itemsCopy);
     editItem.edit = false;
   };
+
   return (
     <div id="main">
       <TextareaAutosize
