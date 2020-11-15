@@ -49,6 +49,7 @@ function App() {
       return;
     }
     editItem.task = value;
+    setEditValue("");
     setItems(itemsCopy);
     editItem.edit = false;
   };
@@ -71,58 +72,60 @@ function App() {
       >
         Add
       </Button>
-      {items.map((item, index) => (
-        <Paper key={item.task} className="list" elevation={3}>
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-          >
-            <Typography variant="h6">{item.task} </Typography>
+      <ol>
+        {items.map((item, index) => (
+          <li key={item.task} className="list">
+            <Box
+              display="flex"
+              flexDirection="row"
+              // justifyContent="space-between"
+            >
+              <Typography variant="h6">{item.task} </Typography>
 
-            <Box>
-              <IconButton
-                aria-label="delete"
-                color="primary"
-                className="edit"
-                onClick={() => handleEdit(index)}
-              >
-                <Edit />
-              </IconButton>
-              {item.edit && (
-                <div>
-                  <TextareaAutosize
-                    id="task"
-                    aria-label="empty textarea"
-                    placeholder="Empty"
-                    className="editTask"
-                    value={editValue}
-                    onChange={(event) => setEditValue(event.target.value)}
-                  />
+              <Box>
+                <IconButton
+                  aria-label="delete"
+                  color="primary"
+                  className="edit"
+                  onClick={() => handleEdit(index)}
+                >
+                  <Edit />
+                </IconButton>
+                {item.edit && (
+                  <div>
+                    <TextareaAutosize
+                      id="task"
+                      aria-label="empty textarea"
+                      placeholder="Empty"
+                      className="editTask"
+                      value={editValue}
+                      onChange={(event) => setEditValue(event.target.value)}
+                    />
 
-                  <Button
-                    id="btn"
-                    variant="contained"
-                    color="primary"
-                    className="saveTask"
-                    onClick={() => handleSave(index, editValue)}
-                  >
-                    Save
-                  </Button>
-                </div>
-              )}
-              <IconButton
-                aria-label="delete"
-                color="secondary"
-                className="delete"
-                onClick={() => handleDelete(index)}
-              >
-                <Delete />
-              </IconButton>
+                    <Button
+                      id="btn"
+                      variant="contained"
+                      color="primary"
+                      className="saveTask"
+                      onClick={() => handleSave(index, editValue)}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                )}
+                <IconButton
+                  aria-label="delete"
+                  color="secondary"
+                  className="delete"
+                  onClick={() => handleDelete(index)}
+                >
+                  <Delete />
+                </IconButton>
+              </Box>
             </Box>
-          </Box>
-        </Paper>
-      ))}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
