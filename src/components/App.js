@@ -1,23 +1,19 @@
 import React from "react";
 import "./../styles/App.css";
-
-import {
-  TextareaAutosize,
-  Button,
-  Paper,
-  Typography,
-  Box,
-  IconButton
-} from "@material-ui/core";
-import { Edit, Delete } from "@material-ui/icons";
+import TaskList from "./TaskList";
 
 function App() {
   const [value, setValue] = React.useState("");
   const [editValue, setEditValue] = React.useState("");
+  const [editIndex, setEditIndex] = React.useState(-1);
   const [items, setItems] = React.useState([]);
 
-  const handleClick = () => {
+  const handleAdd = () => {
     if (value.trim() === "") {
+      return;
+    }
+    let availableTasks = items.map((item) => item.task);
+    if (availableTasks.includes(value)) {
       return;
     }
     const itemObj = { task: value, edit: false };
@@ -37,99 +33,52 @@ function App() {
   const handleEdit = (index) => {
     const itemsCopy = [...items];
     const editItem = itemsCopy[index];
-    setEditValue(editItem.task);
     editItem.edit = true;
+    itemsCopy[index] = editItem;
+    setEditIndex(index);
+    setItems(itemsCopy);
   };
 
-  const handleSave = (index, value) => {
+  const handleSave = () => {
     const itemsCopy = [...items];
-    const editItem = itemsCopy[index];
-    const prevValue = editItem.task;
-    if (value.trim() === "") {
-      editItem.task = prevValue;
-      setEditValue("");
-      setItems(itemsCopy);
-      editItem.edit = false;
-      return;
-    }
-    editItem.task = value;
-    setEditValue("");
+    itemsCopy[editIndex].task = editValue;
+    itemsCopy[editIndex].edit = false;
     setItems(itemsCopy);
-    editItem.edit = false;
+    setEditIndex(-1);
+    setEditValue("");
+  };
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+  const handleEditChange = (event) => {
+    setEditValue(event.target.value);
   };
 
   return (
     <div id="main">
-      <TextareaAutosize
+      <input
         id="task"
-        aria-label="empty textarea"
-        placeholder="Empty"
+        type="text"
         value={value}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={(event) => handleChange(event)}
       />
 
-      <Button
-        id="btn"
-        variant="contained"
-        color="primary"
-        onClick={handleClick}
-      >
+      <button id="btn" onClick={handleAdd}>
         Add
-      </Button>
-      <ol>
-        {items.map((item, index) => (
-          <li key={item.task} className="list">
-            <Box
-              display="flex"
-              flexDirection="row"
-              // justifyContent="space-between"
-            >
-              <Typography variant="h6">{item.task} </Typography>
-
-              <Box>
-                <IconButton
-                  aria-label="delete"
-                  color="primary"
-                  className="edit"
-                  onClick={() => handleEdit(index)}
-                >
-                  <Edit />
-                </IconButton>
-                {item.edit && (
-                  <div>
-                    <TextareaAutosize
-                      id="task"
-                      aria-label="empty textarea"
-                      placeholder="Empty"
-                      className="editTask"
-                      value={editValue}
-                      onChange={(event) => setEditValue(event.target.value)}
-                    />
-
-                    <Button
-                      id="btn"
-                      variant="contained"
-                      color="primary"
-                      className="saveTask"
-                      onClick={() => handleSave(index, editValue)}
-                    >
-                      Save
-                    </Button>
-                  </div>
-                )}
-                <IconButton
-                  aria-label="delete"
-                  color="secondary"
-                  className="delete"
-                  onClick={() => handleDelete(index)}
-                >
-                  <Delete />
-                </IconButton>
-              </Box>
-            </Box>
-          </li>
-        ))}
-      </ol>
+      </button>
+      {items.map((item, index) => (
+        <TaskList
+          taskName={item.task}
+          edit={item.edit}
+          key={index}
+          editItem={editValue}
+          onEditChange={handleEditChange}
+          onSave={handleSave}
+          onDelete={() => handleDelete(index)}
+          onEdit={() => handleEdit(index)}
+        />
+      ))}
     </div>
   );
 }
