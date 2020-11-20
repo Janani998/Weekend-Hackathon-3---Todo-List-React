@@ -44,7 +44,11 @@ function App() {
   const handleSave = (index, value) => {
     const itemsCopy = [...items];
     const editItem = itemsCopy[index];
+    const prevValue = editItem.task;
     if (value.trim() === "") {
+      editItem.task = prevValue;
+      setEditValue("");
+      setItems(itemsCopy);
       editItem.edit = false;
       return;
     }
