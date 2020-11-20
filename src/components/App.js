@@ -5,7 +5,7 @@ import TaskList from "./TaskList";
 function App() {
   const [value, setValue] = React.useState("");
   const [editValue, setEditValue] = React.useState("");
-  const [editIndex, setEditIndex] = React.useState(-1);
+  const [editIndex, setEditIndex] = React.useState("-1");
   const [items, setItems] = React.useState([]);
 
   const handleAdd = () => {
