@@ -4,7 +4,7 @@ import EditSection from "./editSection";
 export default function TaskList({
   taskName,
   edit,
-  editItem,
+  editValue,
   onEditChange,
   onSaveEdit,
   onDelete,
@@ -17,7 +17,7 @@ export default function TaskList({
           taskName
         ) : (
           <EditSection
-            editItem={editItem}
+            editValue={editValue}
             onEditChange={onEditChange}
             onSaveEdit={onSaveEdit}
           />

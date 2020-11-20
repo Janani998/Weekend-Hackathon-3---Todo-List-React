@@ -1,16 +1,16 @@
 import React from "react";
 
-export default function EditSection({ editItem, onEditChange, onSaveEdit }) {
+export default function EditSection({ editValue, onEditChange, onSaveEdit }) {
   return (
     <>
       <input
         className="editTask"
         type="string"
         onChange={onEditChange}
-        value={editItem}
+        value={editValue}
       />
       <button
-        disabled={editItem === ""}
+        disabled={editValue === ""}
         className="saveTask"
         onClick={onSaveEdit}
       >
