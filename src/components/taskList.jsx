@@ -6,7 +6,7 @@ export default function TaskList({
   edit,
   editItem,
   onEditChange,
-  onsaveEdit,
+  onSaveEdit,
   onDelete,
   onEdit
 }) {
@@ -19,7 +19,7 @@ export default function TaskList({
           <EditSection
             editItem={editItem}
             onEditChange={onEditChange}
-            onsaveEdit={onsaveEdit}
+            onSaveEdit={onSaveEdit}
           />
         )}
       </li>

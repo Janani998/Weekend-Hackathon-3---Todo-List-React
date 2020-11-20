@@ -67,7 +67,7 @@ export default function App() {
           serial={index}
           editValue={editValue}
           onEditChange={handleEditChange}
-          onsaveEdit={saveEdit}
+          onSaveEdit={saveEdit}
           onDelete={() => handleDelete(index)}
           onEdit={() => handleEdit(index)}
         />
