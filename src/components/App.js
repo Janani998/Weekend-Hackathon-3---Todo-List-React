@@ -1,82 +1,73 @@
 import React from "react";
 import "./../styles/App.css";
-import TaskList from "./TaskList";
+import TaskList from "./taskList";
 
-function App() {
+export default function App() {
   const [value, setValue] = React.useState("");
+  const [editIndex, setEditIndex] = React.useState("-1");
   const [editValue, setEditValue] = React.useState("");
-  const [editIndex, setEditIndex] = React.useState(-1);
-  const [items, setItems] = React.useState([]);
-
+  const [itemsList, setItemsList] = React.useState([]);
   const handleAdd = () => {
-    const newValue = value;
-    if (newValue.trim() === "") {
+    let newItem = value;
+    if (newItem === "") {
       return;
     }
-    let availableTasks = items.map((item) => item.task);
-    if (availableTasks.includes(newValue)) {
+    let availableTasks = itemsList.map((item) => item.task);
+    if (availableTasks.includes(newItem)) {
       setEditValue("");
       return;
     }
-    const itemObj = { task: newValue, edit: false };
-    const itemsCopy = [...items];
-
-    itemsCopy.push(itemObj);
-    setItems(itemsCopy);
+    let newItemObj = {
+      task: newItem,
+      edit: false
+    };
+    let itemsCopy = [...itemsList, newItemObj];
+    setItemsList(itemsCopy);
     setValue("");
   };
-
-  const handleDelete = (index) => {
-    const itemsCopy = [...items];
-    itemsCopy.splice(index, 1);
-    setItems(itemsCopy);
-  };
-
-  const handleEdit = (index) => {
-    const itemsCopy = [...items];
-    const editItem = itemsCopy[index];
-    editItem.edit = true;
-    itemsCopy[index] = editItem;
-    setEditIndex(index);
-    setItems(itemsCopy);
-  };
-
-  const handleSave = () => {
-    const itemsCopy = [...items];
-    itemsCopy[editIndex].task = editValue;
-    itemsCopy[editIndex].edit = false;
-    setItems(itemsCopy);
-    setEditIndex(-1);
-    setEditValue("");
-  };
-
   const handleChange = (event) => {
     setValue(event.target.value);
   };
   const handleEditChange = (event) => {
     setEditValue(event.target.value);
   };
+  const saveEdit = () => {
+    let editItemsCopy = [...itemsList];
+    editItemsCopy[editIndex].task = editValue;
+    editItemsCopy[editIndex].edit = false;
+    setItemsList(editItemsCopy);
+    setEditIndex(-1);
+    setEditValue("");
+  };
+  const handleDelete = (index) => {
+    let itemsCopy = [...itemsList];
+    itemsCopy.splice(index, 1);
+    setItemsList(itemsCopy);
+  };
 
+  const handleEdit = (index) => {
+    let editObj = itemsList[index];
+    editObj.edit = true;
+    let itemsCopy = [...itemsList];
+    itemsCopy[index] = editObj;
+    setEditIndex(index);
+    setItemsList(itemsCopy);
+  };
   return (
     <div id="main">
-      <input
-        id="task"
-        type="text"
-        value={value}
-        onChange={(event) => handleChange(event)}
-      />
-
+      <input type="string" id="task" onChange={handleChange} value={value} />
       <button id="btn" onClick={handleAdd}>
         Add
       </button>
-      {items.map((item, index) => (
+      {itemsList.map((item, index) => (
         <TaskList
           taskName={item.task}
           edit={item.edit}
           key={index}
-          editItem={editValue}
+          serial={index}
+          editValue={editValue}
           onEditChange={handleEditChange}
-          onSave={handleSave}
+          onsaveEdit={saveEdit}
           onDelete={() => handleDelete(index)}
           onEdit={() => handleEdit(index)}
         />
@@ -84,5 +75,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

@@ -1,12 +1,12 @@
 import React from "react";
-import EditSection from "./EditSection";
+import EditSection from "./editSection";
 
 export default function TaskList({
   taskName,
   edit,
   editItem,
   onEditChange,
-  onSave,
+  onsaveEdit,
   onDelete,
   onEdit
 }) {
@@ -19,10 +19,9 @@ export default function TaskList({
           <EditSection
             editItem={editItem}
             onEditChange={onEditChange}
-            onSave={onSave}
+            onsaveEdit={onsaveEdit}
           />
         )}
-        }
       </li>
       <button className="edit" onClick={onEdit}>
         Edit
